@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.smoke
 def test_registration_with_invalid_email(create_account):
     create_account.open()
     first_name = "John"
@@ -8,6 +12,7 @@ def test_registration_with_invalid_email(create_account):
     create_account.verify_email_error_message('Please enter a valid email address')
 
 
+@pytest.mark.regression
 def test_successful_registration_redirection(create_account):
     create_account.open()
     new_email = create_account.generate_email()
@@ -19,6 +24,7 @@ def test_successful_registration_redirection(create_account):
     create_account.verify_redirection(expected_redirection_url)
 
 
+@pytest.mark.smoke
 def test_duplicate_email_registration(create_account):
     create_account.open()
     first_name = "John"
@@ -29,6 +35,7 @@ def test_duplicate_email_registration(create_account):
     create_account.verify_error_message("There is already an account with this email address. If ")
 
 
+@pytest.mark.smoke
 def test_page_compare(eco_friendly_page):
     eco_friendly_page.open()
     eco_friendly_page.hover_over_product()
@@ -36,6 +43,7 @@ def test_page_compare(eco_friendly_page):
     eco_friendly_page.check_login_message('You must login or register to add items to your wishlist.')
 
 
+@pytest.mark.regression
 def test_add_to_cart_without_color(eco_friendly_page):
     eco_friendly_page.open()
     eco_friendly_page.select_third_product()

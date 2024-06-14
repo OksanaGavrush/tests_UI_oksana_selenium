@@ -11,7 +11,6 @@ from tests_UI_oksana_selenium.pages.locators.locators import ProductCheckerLocat
 class ProductChecker(BasePage):
     relative_url = 'collections/eco-friendly.html'
 
-    @pytest.mark.smoke
     @allure.step("Hover over the second product image")
     def hover_over_product(self):
         element_to_hover_over = self.find(loc.HOVER_ELEMENT)
@@ -26,20 +25,17 @@ class ProductChecker(BasePage):
         )
         add_to_wishlist_button.click()
 
-    @pytest.mark.regression
     @allure.step("Check for the login requirement message")
     def check_login_message(self, login_message):
         page_message = self.find(loc.LOGIN_MESSAGE)
         expected_message = login_message
         assert page_message.text == expected_message
 
-    @pytest.mark.smoke
     @allure.step("Hover over and click on the third product")
     def select_third_product(self):
         element_to_hover_over = self.find(loc.SELECT_THIRD_PRODUCT)
         element_to_hover_over.click()
 
-    @pytest.mark.regression
     @allure.step("Select product size")
     def select_product_size(self):
         size_button = WebDriverWait(self.driver, 10).until(
