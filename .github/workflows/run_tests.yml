@@ -33,16 +33,16 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run all tests
         if: "github.event.inputs.deployment_target == 'all'"
-        run: pytest -v
-  #       continue-on-error: true
-  #     - name: Run smoke tests
-  #       if: "github.event.inputs.deployment_target == 'smoke'"
-  #       run: cd tests_UI_eokulik_selenium && pytest -v -m smoke --alluredir=allure-results
-  #       continue-on-error: true
-  #     - name: Run regression tests
-  #       if: "github.event.inputs.deployment_target == 'regression'"
-  #       run: pytest -v -m regression --alluredir=allure-results
-  #       continue-on-error: true
+        run: pytest -v --alluredir=allure-results
+        continue-on-error: true
+      - name: Run smoke tests
+        if: "github.event.inputs.deployment_target == 'smoke'"
+        run: pytest -v -m smoke --alluredir=allure-results
+        continue-on-error: true
+      - name: Run regression tests
+        if: "github.event.inputs.deployment_target == 'regression'"
+        run: pytest -v -m regression --alluredir=allure-results
+        continue-on-error: true
   #     - name: Install Java
   #       uses: actions/setup-java@v4
   #       with:
