@@ -54,13 +54,13 @@ jobs:
           sudo tar -zxvf allure-2.29.0.tgz -C /opt/ &&
           sudo ln -s /opt/allure-2.29.0/bin/allure /usr/bin/allure
       - name: Генерация отчета
-        run: allure generate -c allure-results -o allure-report
+        run: allure generate -c allure-results -o _site
       - name: Сохранение отчета как артефакта
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
-          path: allure-report
-          retention-days: 5
+          name: _site
+          path: _site
+          retention-days: 1
 
   publish-report:
     name: Публикация отчета
@@ -69,13 +69,8 @@ jobs:
     steps:
       - name: Скачивание артефактов
         uses: actions/download-artifact@v4
-        with:
-          name: allure-report
-          path: downloaded-allure-report
       - name: Загрузка артефакта страниц
         uses: actions/upload-pages-artifact@v3
-        with:
-          path: downloaded-allure-report
       - name: Развертывание на GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
