@@ -1,5 +1,6 @@
 import allure
 import uuid
+import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -36,6 +37,7 @@ class CreateNewAccount(BasePage):
         email_field.clear()
         email_field.send_keys(email)
 
+    @pytest.mark.smoke
     @allure.step('Complete registration with provided details')
     def complete_registration(self, first_name, last_name, email, password):
         self.create_first_name(first_name)
@@ -50,6 +52,7 @@ class CreateNewAccount(BasePage):
         submit_button = self.find(loc.SUBMIT_BUTTON)
         submit_button.click()
 
+    @pytest.mark.regression
     @allure.step('Verify redirection to expected page')
     def verify_redirection(self, expected_url):
         WebDriverWait(self.driver, 10).until(ec.url_to_be(expected_url))
@@ -69,6 +72,7 @@ class CreateNewAccount(BasePage):
         unique_id = uuid.uuid4()
         return f"{unique_id}@{domain}"
 
+    @pytest.mark.regression
     @allure.step('Verify password match')
     def verify_password_match(self):
         password_value = self.find(loc.PASSWORD).get_attribute('value')
@@ -76,6 +80,7 @@ class CreateNewAccount(BasePage):
             'value')
         assert password_value == confirm_password_value, "Passwords do not match"
 
+    @pytest.mark.regression
     @allure.step('Verify specific error message')
     def verify_error_message(self, expected_message):
         error_messages = self.find(loc.ERROR_MESSAGE)
