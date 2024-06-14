@@ -1,10 +1,10 @@
-name: Run autotests
+name: Запуск автотестов
 
 on:
   workflow_dispatch:
     inputs:
       deployment_target:
-        description: select tests to run
+        description: выберите тесты для запуска
         required: true
         type: choice
         default: all
@@ -21,46 +21,47 @@ permissions:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-    name: Tests
+    name: Тесты
     steps:
-      - name: Check out source repository
+      - name: Получение исходного репозитория
         uses: actions/checkout@v4
-      - name: Set up Python environment
+      - name: Настройка среды Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12.2"
-      - name: Install dependancies
+      - name: Установка зависимостей
         run: pip install -r requirements.txt
-      - name: Run all tests
+      - name: Запуск всех тестов
         if: "github.event.inputs.deployment_target == 'all'"
         run: pytest -v --alluredir=allure-results
         continue-on-error: true
-      - name: Run smoke tests
+      - name: Запуск смоук-тестов
         if: "github.event.inputs.deployment_target == 'smoke'"
         run: pytest -v -m smoke --alluredir=allure-results
         continue-on-error: true
-      - name: Run regression tests
+      - name: Запуск регрессионных тестов
         if: "github.event.inputs.deployment_target == 'regression'"
         run: pytest -v -m regression --alluredir=allure-results
         continue-on-error: true
-      - name: Install Java
+      - name: Установка Java
         uses: actions/setup-java@v4
         with:
           distribution: 'microsoft'
           java-version: '17'
-      - name: Install Allure
+      - name: Установка Allure
         run: |
           sudo wget https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.tgz && 
           sudo tar -zxvf allure-2.29.0.tgz -C /opt/ &&
           sudo ln -s /opt/allure-2.29.0/bin/allure /usr/bin/allure
-      - name: Generate report
-        run: allure generate -c tests_UI_oksana_selenium/allure-results -o _site
-      - name: Save report as artifact
+      - name: Генерация отчета
+        run: allure generate -c allure-results -o allure-report
+      - name: Сохранение отчета как артефакта
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report
           retention-days: 5
+
 
   # publish-report:
   #   name: Report publication
