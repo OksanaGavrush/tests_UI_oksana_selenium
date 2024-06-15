@@ -9,15 +9,9 @@ from tests_UI_oksana_selenium.pages.sale_page import SaleChecker
 @pytest.fixture()
 def driver():
     options = Options()
-    options.add_argument("--headless")  # Запуск без GUI
-    options.add_argument("--no-sandbox")  # Запуск в безопасной среде без использования песочницы
-    options.add_argument("--disable-dev-shm-usage")  # Отключение использования /dev/shm
-    options.add_argument("--disable-gpu")  # Отключение аппаратного ускорения
-    options.add_argument(
-        "--disable-features=NetworkService,NetworkServiceInProcess")  # Отключение некоторых функций сетевых сервисов
-    options.add_argument("--disable-extensions")  # Отключение расширений
-    options.add_argument("--disable-infobars")  # Отключение информационных строк
-
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=options)
     yield driver
     driver.quit()
